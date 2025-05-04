@@ -1,0 +1,6 @@
+git add README.md
+git commit -m "Add README with project details"
+git push
+git add .
+git commit -m "Descriptive message about your changes"
+git push
