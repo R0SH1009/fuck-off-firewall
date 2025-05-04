@@ -1,0 +1,4 @@
+mkdir fuck-off-firewall
+cd fuck-off-firewall
+git init
+git add .
