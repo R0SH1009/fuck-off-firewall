@@ -2,13 +2,6 @@ import re
 import pandas as pd
 from datetime import datetime, timedelta
 
-LOG_PATTERN = re.compile(
-    r'^(?P<timestamp>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\s+'
-    r'user:(?P<user>\w+)\s+'
-    r'IP:(?P<ip>[\d.]+)\s+'
-    r'STATUS:(?P<status>FAILED|SUCCESS)$'
-)
-TIMESTAMP_FMT = "%Y-%m-%d %H:%M:%S"
 BRUTE_FORCE_THRESHOLD = 3
 BRUTE_FORCE_WINDOW_MIN = 5
 
@@ -27,16 +20,17 @@ with open("security_logs.txt", "w") as f:
 print("Log file created!")
 
 
-def parse_log_line(line):
-    match = LOG_PATTERN.match(line)
-    if not match:
-        return None
-    return {
-        "timestamp": datetime.strptime(match.group("timestamp"), TIMESTAMP_FMT),
-        "user":      match.group("user"),
-        "ip":        match.group("ip"),
-        "status":    match.group("status"),
-    }
+def parse_log_entry(line):
+    pattern = r'(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) user:(\w+) IP:([\d.]+) STATUS:(\w+)'
+    match = re.match(pattern, line)
+    if match:
+        return {
+            "timestamp": match.group(1),
+            "username":  match.group(2),
+            "ip":        match.group(3),
+            "status":    match.group(4)
+        }
+    return None
 
 
 def detect_brute_force(df, threshold=BRUTE_FORCE_THRESHOLD, window_minutes=BRUTE_FORCE_WINDOW_MIN):
@@ -55,7 +49,7 @@ def detect_brute_force(df, threshold=BRUTE_FORCE_THRESHOLD, window_minutes=BRUTE
                     "failed_count":   len(times),
                     "window_start":   times[i],
                     "window_end":     times[i] + window,
-                    "users_targeted": group["user"].unique().tolist(),
+                    "users_targeted": group["username"].unique().tolist(),
                 }
                 break
 
@@ -73,16 +67,20 @@ with open("security_logs.txt", "r") as f:
 
 print(f"\nTotal entries loaded: {len(log_entries)}")
 
-parsed_entries = [e for e in (parse_log_line(l) for l in log_entries) if e is not None]
+parsed_logs = [parse_log_entry(entry) for entry in log_entries]
+parsed_logs = [log for log in parsed_logs if log]
 
-df = pd.DataFrame(parsed_entries, columns=["timestamp", "user", "ip", "status"])
+print(f"Successfully parsed: {len(parsed_logs)} entries")
+
+df = pd.DataFrame(parsed_logs, columns=["timestamp", "username", "ip", "status"])
+df["timestamp"] = pd.to_datetime(df["timestamp"])
 df = df.sort_values("timestamp").reset_index(drop=True)
 
 total         = len(df)
 failed_count  = len(df[df["status"] == "FAILED"])
 success_count = len(df[df["status"] == "SUCCESS"])
 unique_ips    = df["ip"].nunique()
-unique_users  = df["user"].nunique()
+unique_users  = df["username"].nunique()
 
 ip_failure_counts = (
     df[df["status"] == "FAILED"]
