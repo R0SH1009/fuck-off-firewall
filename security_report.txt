@@ -1,0 +1,25 @@
+==================================================
+SECURITY LOG ANALYSIS REPORT
+Generated: 2026-05-29 20:21:05.497788
+==================================================
+
+Total Log Entries: 13
+Total Alerts: 10
+
+Failed Login Summary:
+  - john_doe: 3 failures
+  - admin: 3 failures
+  - hacker: 4 failures
+
+Active Alerts:
+  [HIGH] Brute force detected: john_doe failed 3 times
+  [HIGH] Brute force detected: admin failed 3 times
+  [HIGH] Brute force detected: hacker failed 4 times
+  [HIGH] ⚠️ Multiple users from IP 203.0.113.99: {'hacker', 'admin'}
+  [HIGH] 🌙 After-hours login: bob_jones at 2024-01-15 23:58:01
+  [HIGH] 🌙 After-hours login: hacker at 2024-01-15 03:15:00
+  [HIGH] 🌙 After-hours login: hacker at 2024-01-15 03:15:01
+  [HIGH] 🌙 After-hours login: hacker at 2024-01-15 03:15:02
+  [HIGH] 🌙 After-hours login: hacker at 2024-01-15 03:15:03
+  [HIGH] 🌙 After-hours login: hacker at 2024-01-15 03:15:04
+==================================================
