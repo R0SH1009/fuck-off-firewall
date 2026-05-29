@@ -1,0 +1,35 @@
+============================================================
+         NETWORK TRAFFIC ANALYSIS REPORT
+Generated : 2026-05-29 20:46:18.573988
+============================================================
+
+Total entries   : 8
+Total bytes     : 5,250,944
+Unique src IPs  : 5
+Unique dst IPs  : 5
+Unique ports    : 6
+
+--- PROTOCOL BREAKDOWN ---
+  UNKNOWN          3 connections
+  DNS              2 connections
+  HTTPS            2 connections
+  SSH              1 connections
+
+--- TOP SOURCE IPs ---
+  203.0.113.45            3 connections
+  192.168.1.50            2 connections
+  192.168.1.100           1 connections
+  192.168.1.75            1 connections
+  192.168.1.80            1 connections
+
+--- THREATS DETECTED ---
+  [HIGH  ] Port scan from 203.0.113.45: hit 3 ports [4444, 5555, 6666] in 5s
+  [MEDIUM] Large transfer: 192.168.1.75 -> 185.220.101.1 5,242,880 bytes on port 443
+  [HIGH  ] Unknown protocol: 203.0.113.45 -> 192.168.1.50 port 4444
+  [HIGH  ] Unknown protocol: 203.0.113.45 -> 192.168.1.50 port 5555
+  [HIGH  ] Unknown protocol: 203.0.113.45 -> 192.168.1.50 port 6666
+  [LOW   ] Top talker: 203.0.113.45 with 3 connections
+
+============================================================
+  1 port scan(s), 1 large transfer(s) detected.
+============================================================
