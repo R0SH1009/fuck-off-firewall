@@ -1,6 +1,7 @@
 import re
 import pandas as pd
 from datetime import datetime, timedelta
+from collections import defaultdict
 
 BRUTE_FORCE_THRESHOLD = 3
 BRUTE_FORCE_WINDOW_MIN = 5
@@ -54,6 +55,85 @@ def detect_brute_force(df, threshold=BRUTE_FORCE_THRESHOLD, window_minutes=BRUTE
                 break
 
     return suspicious
+
+
+def find_suspicious_patterns(parsed_logs):
+    suspicious = []
+    ip_users = defaultdict(set)
+    hour_activity = defaultdict(list)
+
+    for log in parsed_logs:
+        ip_users[log["ip"]].add(log["username"])
+        hour = datetime.strptime(log["timestamp"], "%Y-%m-%d %H:%M:%S").hour
+        hour_activity[hour].append(log)
+
+    # Multiple users from same IP
+    for ip, users in ip_users.items():
+        if len(users) > 1:
+            suspicious.append(
+                f"⚠️ Multiple users from IP {ip}: {users}"
+            )
+
+    # After hours logins (before 6am or after 10pm)
+    for hour, logs in hour_activity.items():
+        if hour < 6 or hour > 22:
+            for log in logs:
+                suspicious.append(
+                    f"🌙 After-hours login: {log['username']} at {log['timestamp']}"
+                )
+
+    return suspicious
+
+
+def generate_alerts(failed_logins, patterns):
+    alerts = []
+
+    for user, count in failed_logins.items():
+        if count >= 3:
+            alerts.append({
+                "severity": "HIGH",
+                "message": f"Brute force detected: {user} failed {count} times"
+            })
+        elif count == 2:
+            alerts.append({
+                "severity": "MEDIUM",
+                "message": f"Multiple failures: {user} failed {count} times"
+            })
+
+    for pattern in patterns:
+        alerts.append({
+            "severity": "HIGH",
+            "message": pattern
+        })
+
+    return alerts
+
+
+def generate_report(parsed_logs, failed_logins, alerts):
+    report = []
+    report.append("=" * 50)
+    report.append("SECURITY LOG ANALYSIS REPORT")
+    report.append(f"Generated: {datetime.now()}")
+    report.append("=" * 50)
+    report.append(f"\nTotal Log Entries: {len(parsed_logs)}")
+    report.append(f"Total Alerts: {len(alerts)}")
+    report.append(f"\nFailed Login Summary:")
+
+    for user, count in failed_logins.items():
+        report.append(f"  - {user}: {count} failures")
+
+    report.append("\nActive Alerts:")
+    for alert in alerts:
+        report.append(f"  [{alert['severity']}] {alert['message']}")
+
+    report.append("=" * 50)
+
+    report_text = "\n".join(report)
+
+    with open("security_report.txt", "w") as f:
+        f.write(report_text)
+
+    print(report_text)
 
 
 log_entries = []
@@ -128,3 +208,68 @@ else:
 print("\n" + "=" * 60)
 print(f"  {len(suspicious)} suspicious IP(s) detected. Recommend firewall review.")
 print("=" * 60)
+
+failed_logins = {}
+for log in parsed_logs:
+    if log["status"] == "FAILED":
+        user = log["username"]
+        failed_logins[user] = failed_logins.get(user, 0) + 1
+
+print("\n--- Failed Login Counts ---")
+for user, count in failed_logins.items():
+    flag = " ⚠️ SUSPICIOUS" if count >= 3 else ""
+    print(f"{user}: {count} failures{flag}")
+
+ip_tracker = {}
+for log in parsed_logs:
+    ip = log["ip"]
+    ip_tracker[ip] = ip_tracker.get(ip, 0) + 1
+
+print("\n--- IP Address Activity ---")
+for ip, count in ip_tracker.items():
+    flag = " 🚨 INVESTIGATE" if count == 1 else ""
+    print(f"{ip}: {count} attempts{flag}")
+
+patterns = find_suspicious_patterns(parsed_logs)
+print("\n--- Suspicious Patterns ---")
+for p in patterns:
+    print(p)
+
+alerts = generate_alerts(failed_logins, patterns)
+print("\n--- ALERTS ---")
+for alert in alerts:
+    print(f"[{alert['severity']}] {alert['message']}")
+
+generate_report(parsed_logs, failed_logins, alerts)
+
+# Add more complex test scenarios
+extra_logs = """2024-01-15 03:15:00 user:hacker IP:203.0.113.99 STATUS:FAILED
+2024-01-15 03:15:01 user:hacker IP:203.0.113.99 STATUS:FAILED
+2024-01-15 03:15:02 user:hacker IP:203.0.113.99 STATUS:FAILED
+2024-01-15 03:15:03 user:hacker IP:203.0.113.99 STATUS:FAILED
+2024-01-15 03:15:04 user:hacker IP:203.0.113.99 STATUS:SUCCESS"""
+
+with open("security_logs.txt", "a") as f:
+    f.write("\n" + extra_logs)
+
+# Re-run everything with new data
+log_entries = []
+with open("security_logs.txt", "r") as f:
+    for line in f:
+        line = line.strip()
+        if line:
+            log_entries.append(line)
+
+parsed_logs = [parse_log_entry(entry) for entry in log_entries]
+parsed_logs = [log for log in parsed_logs if log]
+failed_logins = {}
+for log in parsed_logs:
+    if log["status"] == "FAILED":
+        user = log["username"]
+        failed_logins[user] = failed_logins.get(user, 0) + 1
+
+patterns = find_suspicious_patterns(parsed_logs)
+alerts = generate_alerts(failed_logins, patterns)
+generate_report(parsed_logs, failed_logins, alerts)
+
+print("\n✅ Project Complete! Check security_report.txt for your full report.")
