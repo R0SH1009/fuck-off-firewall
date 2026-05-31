@@ -1,0 +1,79 @@
+============================================================
+      NBA PLAYOFF STATS ANALYSIS REPORT
+Generated : 2026-05-31 23:06:50
+============================================================
+
+Total game-player entries : 40
+Players tracked           : 16
+Teams                     : 2
+Games covered             : 6 per team
+
+--- TEAM RECORDS ---
+  New York Knicks           3W - 0L  (3 games)
+  San Antonio Spurs         2W - 1L  (3 games)
+
+--- GAME LOG ---
+  Date         Game     Team                      vs                        Score      Res  Margin
+  ------------ -------- ------------------------- ------------------------- ---------- ---- ------
+  2026-05-21   Game 2   New York Knicks           Cleveland Cavaliers       109-93     W        16
+  2026-05-23   Game 3   New York Knicks           Cleveland Cavaliers       121-108    W        13
+  2026-05-25   Game 4   New York Knicks           Cleveland Cavaliers       130-93     W        37
+  2026-05-26   Game 5   San Antonio Spurs         Oklahoma City Thunder     127-114    W        13
+  2026-05-28   Game 6   San Antonio Spurs         Oklahoma City Thunder     118-91     W        27
+  2026-05-30   Game 7   San Antonio Spurs         Oklahoma City Thunder     111-103    W         8
+
+--- TOP SINGLE-GAME SCORING PERFORMANCES ---
+  Player                 Team                      Game      PTS
+  ---------------------- ------------------------- -------- ----
+  Jalen Brunson          New York Knicks           Game 3     30
+  Victor Wembanyama      San Antonio Spurs         Game 6     28
+  Victor Wembanyama      San Antonio Spurs         Game 5     24
+  Victor Wembanyama      San Antonio Spurs         Game 7     22
+  De'Aaron Fox           San Antonio Spurs         Game 5     21
+
+--- DOUBLE-DOUBLE PERFORMANCES ---
+  Player                 Team                      Game      PTS  AST  REB
+  ---------------------- ------------------------- -------- ---- ---- ----
+  Victor Wembanyama      San Antonio Spurs         Game 6     28    4   11
+  Victor Wembanyama      San Antonio Spurs         Game 5     24    2   12
+  Karl-Anthony Towns     New York Knicks           Game 4     19    3   14
+  Karl-Anthony Towns     New York Knicks           Game 3     18    4   11
+  Karl-Anthony Towns     New York Knicks           Game 2     17    2   13
+  Josh Hart              New York Knicks           Game 2     14    4   10
+
+--- PLAYER AVERAGES (sorted by total PTS) ---
+  Player                 Team                       G   PPG   APG   RPG Total PTS
+  ---------------------- ------------------------- -- ----- ----- ----- ---------
+  Victor Wembanyama      San Antonio Spurs          3  24.7   2.7  10.0        74
+  Jalen Brunson          New York Knicks            3  21.3   6.0   3.0        64
+  OG Anunoby             New York Knicks            3  18.0   3.0   7.0        54
+  Karl-Anthony Towns     New York Knicks            3  18.0   3.0  12.7        54
+  Devin Vassell          San Antonio Spurs          3  14.0   3.3   4.7        42
+  Stephon Castle         San Antonio Spurs          3  14.0   7.3   5.0        42
+  Dylan Harper           San Antonio Spurs          3  13.7   2.3   4.7        41
+  Mikal Bridges          New York Knicks            3  13.7   4.0   3.3        41
+  Julian Champagnie      San Antonio Spurs          3  13.3   1.3   5.0        40
+  De'Aaron Fox           San Antonio Spurs          2  18.0   5.0   1.5        36
+  Josh Hart              New York Knicks            3  11.0   5.0  10.0        33
+  Miles McBride          New York Knicks            3  10.7   2.3   1.7        32
+  Keldon Johnson         San Antonio Spurs          2  12.0   1.5   4.5        24
+  Landry Shamet          New York Knicks            1  16.0   2.0   0.0        16
+  Mitchell Robinson      New York Knicks            1   8.0   0.0  10.0         8
+  Luke Kornet            San Antonio Spurs          1   2.0   0.0   4.0         2
+
+--- TEAM SCORING LEADERS ---
+
+  New York Knicks
+    Jalen Brunson            21.3 PPG    6.0 APG    3.0 RPG
+    OG Anunoby               18.0 PPG    3.0 APG    7.0 RPG
+    Karl-Anthony Towns       18.0 PPG    3.0 APG   12.7 RPG
+
+  San Antonio Spurs
+    Victor Wembanyama        24.7 PPG    2.7 APG   10.0 RPG
+    Devin Vassell            14.0 PPG    3.3 APG    4.7 RPG
+    Stephon Castle           14.0 PPG    7.3 APG    5.0 RPG
+
+============================================================
+  Series leader: Victor Wembanyama (74 PTS, 24.7 PPG across 3 games)
+  Combined points scored across all tracked games: 603
+============================================================
