@@ -1,0 +1,54 @@
+[
+  {
+    "id": "entry_1",
+    "picks_count": 4,
+    "entry_type": "Flex Play",
+    "entry_amount": 20,
+    "payout": 120,
+    "result": "Win",
+    "game": "NYK 105 vs SAS 95",
+    "game_status": "Final",
+    "picks": [
+      {"player":"De'Aaron Fox",     "team":"SAS","position":"G",  "jersey":"4", "direction":"LESS","line":13.5,"stat":"Points",   "actual":7, "hit":true,  "difficulty":""},
+      {"player":"Devin Vassell",    "team":"SAS","position":"G-F","jersey":"24","direction":"MORE","line":6.5, "stat":"Rebs+Asts","actual":12,"hit":true,  "difficulty":"GOBLIN"},
+      {"player":"Karl-Anthony Towns","team":"NYK","position":"C-F","jersey":"32","direction":"MORE","line":15.5,"stat":"Points",   "actual":18,"hit":true,  "difficulty":"GOBLIN"},
+      {"player":"Victor Wembanyama","team":"SAS","position":"F-C","jersey":"1", "direction":"MORE","line":11.5,"stat":"Rebounds", "actual":12,"hit":true,  "difficulty":"DEMON"}
+    ]
+  },
+  {
+    "id": "entry_2",
+    "picks_count": 6,
+    "entry_type": "Flex Play",
+    "entry_amount": 20,
+    "payout": 260,
+    "result": "Loss",
+    "game": "NYK 105 vs SAS 104",
+    "game_status": "Final",
+    "picks": [
+      {"player":"De'Aaron Fox",      "team":"SAS","position":"G",  "jersey":"4", "direction":"LESS","line":14.5,"stat":"Points","actual":20,"hit":false, "difficulty":""},
+      {"player":"Jalen Brunson",     "team":"NYK","position":"G",  "jersey":"11","direction":"MORE","line":34.5,"stat":"PRA",   "actual":31,"hit":false, "difficulty":""},
+      {"player":"Julian Champagnie", "team":"SAS","position":"F",  "jersey":"30","direction":"MORE","line":2.5, "stat":"3PTM",  "actual":2, "hit":false, "difficulty":""},
+      {"player":"Julian Champagnie", "team":"SAS","position":"F",  "jersey":"30","direction":"MORE","line":9.5, "stat":"Points","actual":8, "hit":false, "difficulty":"GOBLIN"},
+      {"player":"Karl-Anthony Towns","team":"NYK","position":"C-F","jersey":"32","direction":"MORE","line":32.5,"stat":"PRA",   "actual":38,"hit":true,  "difficulty":""},
+      {"player":"Victor Wembanyama","team":"SAS","position":"F-C","jersey":"1", "direction":"MORE","line":41.5,"stat":"PRA",   "actual":40,"hit":false, "difficulty":""}
+    ]
+  },
+  {
+    "id": "entry_3",
+    "picks_count": 6,
+    "entry_type": "Flex Play",
+    "entry_amount": 20,
+    "payout": 920,
+    "result": "Loss",
+    "game": "NYK 105 vs SAS 95",
+    "game_status": "Final",
+    "picks": [
+      {"player":"Jalen Brunson",     "team":"NYK","position":"G",  "jersey":"11","direction":"MORE","line":0.5, "stat":"Points","actual":30,"hit":true,  "difficulty":"GOBLIN"},
+      {"player":"Julian Champagnie", "team":"SAS","position":"F",  "jersey":"30","direction":"MORE","line":10.0,"stat":"Points","actual":16,"hit":true,  "difficulty":""},
+      {"player":"Karl-Anthony Towns","team":"NYK","position":"C-F","jersey":"32","direction":"LESS","line":33.0,"stat":"PRA",   "actual":34,"hit":false, "difficulty":""},
+      {"player":"Landry Shamet",     "team":"NYK","position":"G",  "jersey":"44","direction":"MORE","line":14.5,"stat":"PRA",   "actual":14,"hit":false, "difficulty":"DEMON"},
+      {"player":"Mikal Bridges",     "team":"NYK","position":"G-F","jersey":"25","direction":"MORE","line":21.5,"stat":"PRA",   "actual":15,"hit":false, "difficulty":""},
+      {"player":"Victor Wembanyama","team":"SAS","position":"F-C","jersey":"1", "direction":"LESS","line":43.5,"stat":"PRA",   "actual":40,"hit":true,  "difficulty":""}
+    ]
+  }
+]
