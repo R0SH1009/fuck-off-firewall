@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trading OS</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<div class="app-container">
+
+  <header class="app-header">
+    <div class="header-left">
+      <span class="logo">▲ TRADING OS</span>
+      <span class="tagline">edge tracker · prediction markets</span>
+    </div>
+    <div class="header-right">
+      <button class="btn btn-ghost" onclick="exportData('csv')">↓ CSV</button>
+      <button class="btn btn-ghost" onclick="exportData('json')">↓ JSON</button>
+      <button class="btn btn-primary" onclick="openModal()">+ LOG TRADE</button>
+    </div>
+  </header>
+
+  <nav class="tab-nav">
+    <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
+    <button class="tab-btn" data-tab="tradelog">Trade Log</button>
+    <button class="tab-btn" data-tab="edge">Edge Analysis</button>
+    <button class="tab-btn" data-tab="sizing">Position Sizing</button>
+  </nav>
+
+  <!-- ═══════════════════════════════ DASHBOARD ═══════════════════════════════ -->
+  <div id="tab-dashboard" class="tab-content active">
+
+    <div class="metrics-grid" id="metrics-grid"></div>
+
+    <div id="streak-tracker" class="streak-tracker"></div>
+
+    <div class="section-row">
+      <div class="chart-card">
+        <div class="chart-title">Cumulative P/L</div>
+        <canvas id="plCurveChart"></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Calibration</div>
+        <div class="chart-subtitle">Predicted probability vs actual win rate</div>
+        <canvas id="calibrationChart"></canvas>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══════════════════════════════ TRADE LOG ════════════════════════════════ -->
+  <div id="tab-tradelog" class="tab-content">
+
+    <div class="toolbar">
+      <div class="filters">
+        <select id="filter-type" onchange="renderTradeLog()">
+          <option value="">All Types</option>
+          <option value="crypto">Crypto</option>
+          <option value="sports">Sports</option>
+          <option value="weather">Weather</option>
+          <option value="politics">Politics</option>
+          <option value="econ">Econ</option>
+          <option value="other">Other</option>
+        </select>
+        <select id="filter-outcome" onchange="renderTradeLog()">
+          <option value="">All Outcomes</option>
+          <option value="win">Win</option>
+          <option value="loss">Loss</option>
+          <option value="push">Push</option>
+        </select>
+      </div>
+      <span id="trade-count" class="trade-count"></span>
+    </div>
+
+    <div class="table-wrapper">
+      <table class="trade-table">
+        <thead>
+          <tr>
+            <th>Date / Time</th>
+            <th>Market</th>
+            <th>Type</th>
+            <th>Side</th>
+            <th>Entry %</th>
+            <th>My Est.</th>
+            <th>Size ($)</th>
+            <th>P/L</th>
+            <th>Outcome</th>
+            <th>Notes</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="trade-table-body"></tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- ═══════════════════════════════ EDGE ANALYSIS ═══════════════════════════ -->
+  <div id="tab-edge" class="tab-content">
+
+    <div class="section-row">
+
+      <div class="card">
+        <div class="card-title">Edge Calculator</div>
+        <div class="calc-grid">
+          <div class="calc-field">
+            <label>My Estimated Probability (%)</label>
+            <input type="number" id="edge-myprob" min="1" max="99" value="65" oninput="calcEdge()">
+          </div>
+          <div class="calc-field">
+            <label>Market Price (%)</label>
+            <input type="number" id="edge-mktprice" min="1" max="99" value="58" oninput="calcEdge()">
+          </div>
+          <div class="calc-field">
+            <label>Spread (%)</label>
+            <input type="number" id="edge-spread" min="0" max="20" step="0.1" value="1.0" oninput="calcEdge()">
+          </div>
+          <div class="calc-field">
+            <label>Fees (%)</label>
+            <input type="number" id="edge-fees" min="0" max="10" step="0.1" value="0.5" oninput="calcEdge()">
+          </div>
+        </div>
+        <div class="result-row" id="edge-results"></div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-title">P/L by Market Type</div>
+        <canvas id="plByTypeChart"></canvas>
+      </div>
+
+    </div>
+
+    <div class="chart-card" style="margin-bottom:16px">
+      <div class="chart-title">Win Rate by Hour of Day</div>
+      <div class="chart-subtitle">Green ≥ 55% · Blue 45–55% · Red &lt; 45% · Grey = no data</div>
+      <canvas id="winByHourChart"></canvas>
+    </div>
+
+  </div>
+
+  <!-- ═══════════════════════════════ POSITION SIZING ══════════════════════════ -->
+  <div id="tab-sizing" class="tab-content">
+
+    <div class="section-row section-row--equal">
+
+      <div class="card">
+        <div class="card-title">Kelly Criterion Calculator</div>
+        <div class="calc-grid">
+          <div class="calc-field">
+            <label>Win Rate (%)</label>
+            <input type="number" id="kelly-winrate" min="1" max="99" value="55" oninput="calcKelly()">
+          </div>
+          <div class="calc-field">
+            <label>Avg Win ($)</label>
+            <input type="number" id="kelly-avgwin" min="1" value="35" oninput="calcKelly()">
+          </div>
+          <div class="calc-field">
+            <label>Avg Loss ($)</label>
+            <input type="number" id="kelly-avgloss" min="1" value="25" oninput="calcKelly()">
+          </div>
+          <div class="calc-field">
+            <label>Bankroll ($)</label>
+            <input type="number" id="kelly-bankroll" min="1" value="1000" oninput="calcKelly()">
+          </div>
+        </div>
+        <div class="result-row" id="kelly-results"></div>
+        <div class="kelly-note" id="kelly-note"></div>
+        <div style="margin-top:12px">
+          <button class="btn btn-ghost" onclick="seedKellyFromHistory();calcKelly()" style="font-size:11px">↺ Fill from trade history</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Sizing Rules Reference</div>
+        <table class="rules-table">
+          <thead>
+            <tr>
+              <th>Edge</th>
+              <th>Win Rate</th>
+              <th>Rec. Fraction</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="neg">&lt; 3%</td>
+              <td>Any</td>
+              <td class="neg">Skip</td>
+              <td>Below noise floor</td>
+            </tr>
+            <tr>
+              <td>3 – 5%</td>
+              <td>&lt; 52%</td>
+              <td>1/8 Kelly</td>
+              <td>Weak signal, tiny size</td>
+            </tr>
+            <tr>
+              <td>5 – 10%</td>
+              <td>52 – 56%</td>
+              <td>1/4 Kelly</td>
+              <td>Standard edge</td>
+            </tr>
+            <tr>
+              <td>10 – 15%</td>
+              <td>56 – 60%</td>
+              <td>1/4 – 1/2 Kelly</td>
+              <td>Strong edge</td>
+            </tr>
+            <tr>
+              <td>&gt; 15%</td>
+              <td>&gt; 60%</td>
+              <td>1/2 Kelly max</td>
+              <td>Cap at half-Kelly always</td>
+            </tr>
+            <tr class="rule-divider">
+              <td colspan="4">HARD RULES</td>
+            </tr>
+            <tr>
+              <td colspan="2">Single binary trade</td>
+              <td>≤ 5% bankroll</td>
+              <td>Hard cap, no exceptions</td>
+            </tr>
+            <tr>
+              <td colspan="2">Correlated markets</td>
+              <td>Halve each</td>
+              <td>Treat as one position</td>
+            </tr>
+            <tr>
+              <td colspan="2">After 3-loss streak</td>
+              <td>Step down 50%</td>
+              <td>Until back to even on day</td>
+            </tr>
+            <tr>
+              <td colspan="2">After 5% drawdown</td>
+              <td>Pause 24h</td>
+              <td>Review edge before returning</td>
+            </tr>
+            <tr>
+              <td colspan="2">Unconfirmed edge (&lt; 30 trades)</td>
+              <td>1/8 Kelly</td>
+              <td>Prove it before sizing up</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- /app-container -->
+
+<!-- ═══════════════════════════════ ADD TRADE MODAL ═════════════════════════ -->
+<div id="trade-modal" class="modal-overlay" onclick="closeModalOverlay(event)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2>Log Trade</h2>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-field">
+          <label>Date / Time</label>
+          <input type="datetime-local" id="f-datetime">
+        </div>
+        <div class="form-field">
+          <label>Market Type</label>
+          <select id="f-type">
+            <option value="crypto">Crypto</option>
+            <option value="sports">Sports</option>
+            <option value="weather">Weather</option>
+            <option value="politics">Politics</option>
+            <option value="econ">Econ</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="form-field full-width">
+          <label>Market Description</label>
+          <input type="text" id="f-market" placeholder="e.g. BTC above $65k by EOD">
+        </div>
+        <div class="form-field">
+          <label>Side</label>
+          <select id="f-side">
+            <option value="YES">YES</option>
+            <option value="NO">NO</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Outcome</label>
+          <select id="f-outcome">
+            <option value="win">Win</option>
+            <option value="loss">Loss</option>
+            <option value="push">Push</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Entry Price (%)</label>
+          <input type="number" id="f-entry" min="1" max="99" placeholder="Market price at entry">
+        </div>
+        <div class="form-field">
+          <label>My Est. Probability (%)</label>
+          <input type="number" id="f-myprob" min="1" max="99" placeholder="Your true probability estimate">
+        </div>
+        <div class="form-field">
+          <label>Position Size ($)</label>
+          <input type="number" id="f-size" min="0" step="0.01" placeholder="Dollars committed">
+        </div>
+        <div class="form-field">
+          <label>P/L ($)</label>
+          <input type="number" id="f-pnl" step="0.01" placeholder="Realized profit/loss">
+        </div>
+        <div class="form-field full-width">
+          <label>Notes</label>
+          <textarea id="f-notes" rows="2" placeholder="Reasoning, context, lessons..."></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="submitTrade()">Log Trade</button>
+    </div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
