@@ -503,11 +503,13 @@ body{background:#08080f;color:#e8e8f0;font-family:'Segoe UI',system-ui,-apple-sy
 .tab-btn:hover{color:#ccc;background:#ffffff08}
 .tab-btn.active{color:#FFD700;border-bottom-color:#FFD700;background:#FFD70010}
 
-/* ── Filter bar ── */
-.filter-bar{display:none;gap:8px;flex-wrap:wrap;padding:16px 32px}
-.filter-btn{padding:6px 16px;border-radius:20px;border:1px solid #333;background:transparent;color:#888;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .15s}
-.filter-btn:hover{border-color:#666;color:#ccc}
-.filter-btn.active{border-color:#FFD700;color:#FFD700;background:#FFD70015}
+/* ── Tab count badges ── */
+.tab-count{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 5px;border-radius:9px;font-size:10px;font-weight:900;margin-left:4px;vertical-align:middle}
+.win-count{background:#00ff8825;color:#00ff88;border:1px solid #00ff8840}
+.loss-count{background:#ff445525;color:#ff6677;border:1px solid #ff445540}
+
+/* ── Empty state ── */
+.empty-state{padding:60px 32px;text-align:center;color:#444;font-size:14px;font-weight:600;letter-spacing:2px;text-transform:uppercase}
 
 /* ── Sections ── */
 .section{display:none;padding:0 32px 48px}
@@ -692,19 +694,8 @@ JS = """
 function showTab(id) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === id));
   document.querySelectorAll('.section').forEach(s => s.classList.toggle('active', s.id === id));
-  const fb = document.querySelector('.filter-bar');
-  if (fb) fb.style.display = (id === 'entries') ? 'flex' : 'none';
 }
-function filterEntries(type) {
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === type));
-  document.querySelectorAll('.entry-card').forEach(card => {
-    let show = true;
-    if (type === 'wins')   show = card.dataset.result === 'win';
-    if (type === 'losses') show = card.dataset.result === 'loss';
-    card.style.display = show ? '' : 'none';
-  });
-}
-document.addEventListener('DOMContentLoaded', () => { showTab('entries'); filterEntries('all'); });
+document.addEventListener('DOMContentLoaded', () => { showTab('entries'); });
 """
 
 
@@ -730,6 +721,10 @@ def generate_html(players, entries, out):
         return (0 if p["has_ps"] else 1, -hr, -p["avg_pts"])
     picks = "\n".join(pick_card_html(p) for p in sorted(players.values(), key=pick_key))
 
+    win_entries  = "\n".join(entry_card_html(e) for e in entries if e["result"]=="Win")
+    loss_entries = "\n".join(entry_card_html(e) for e in entries if e["result"]!="Win")
+    total_losses = len(entries) - total_wins
+
     html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -747,6 +742,7 @@ def generate_html(players, entries, out):
   <div class="header-stats">
     <div class="hstat"><span class="hstat-val">{len(entries)}</span><span class="hstat-label">Entries</span></div>
     <div class="hstat"><span class="hstat-val win-val">{total_wins}</span><span class="hstat-label">Wins</span></div>
+    <div class="hstat"><span class="hstat-val loss-val">{total_losses}</span><span class="hstat-label">Losses</span></div>
     <div class="hstat"><span class="hstat-val">{total_hits}/{total_bets}</span><span class="hstat-label">Picks Hit</span></div>
     <div class="hstat"><span class="hstat-val {'win-val' if net>=0 else 'loss-val'}">${abs(net)}</span><span class="hstat-label">{'Net Win' if net>=0 else 'Net Loss'}</span></div>
     <div class="hstat"><span class="hstat-val">{ps_ct}</span><span class="hstat-label">PS Profiles</span></div>
@@ -754,18 +750,20 @@ def generate_html(players, entries, out):
 </div>
 
 <div class="tab-bar">
-  <button class="tab-btn" data-tab="entries" onclick="showTab('entries')">Past Bets</button>
+  <button class="tab-btn" data-tab="entries" onclick="showTab('entries')">All Bets</button>
+  <button class="tab-btn" data-tab="wins"    onclick="showTab('wins')">Wins <span class="tab-count win-count">{total_wins}</span></button>
+  <button class="tab-btn" data-tab="losses"  onclick="showTab('losses')">Losses <span class="tab-count loss-count">{total_losses}</span></button>
   <button class="tab-btn" data-tab="players" onclick="showTab('players')">Player Cards</button>
   <button class="tab-btn" data-tab="picks"   onclick="showTab('picks')">Finals Picks</button>
 </div>
 
-<div class="filter-bar">
-  <button class="filter-btn" data-filter="all"    onclick="filterEntries('all')">All Entries</button>
-  <button class="filter-btn" data-filter="wins"   onclick="filterEntries('wins')">Wins</button>
-  <button class="filter-btn" data-filter="losses" onclick="filterEntries('losses')">Losses</button>
-</div>
-
 <div id="entries" class="section"><div class="entry-grid">{entry_cards}</div></div>
+<div id="wins"    class="section">
+  {'<div class="entry-grid">' + win_entries + '</div>' if win_entries else '<div class="empty-state">No winning entries yet. Keep grinding.</div>'}
+</div>
+<div id="losses"  class="section">
+  {'<div class="entry-grid">' + loss_entries + '</div>' if loss_entries else '<div class="empty-state">No losses. Legendary.</div>'}
+</div>
 <div id="players" class="section"><div class="player-grid">{pcards}</div></div>
 <div id="picks"   class="section"><div class="pick-grid">{picks}</div></div>
 

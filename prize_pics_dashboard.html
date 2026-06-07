@@ -24,11 +24,13 @@ body{background:#08080f;color:#e8e8f0;font-family:'Segoe UI',system-ui,-apple-sy
 .tab-btn:hover{color:#ccc;background:#ffffff08}
 .tab-btn.active{color:#FFD700;border-bottom-color:#FFD700;background:#FFD70010}
 
-/* ── Filter bar ── */
-.filter-bar{display:none;gap:8px;flex-wrap:wrap;padding:16px 32px}
-.filter-btn{padding:6px 16px;border-radius:20px;border:1px solid #333;background:transparent;color:#888;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .15s}
-.filter-btn:hover{border-color:#666;color:#ccc}
-.filter-btn.active{border-color:#FFD700;color:#FFD700;background:#FFD70015}
+/* ── Tab count badges ── */
+.tab-count{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 5px;border-radius:9px;font-size:10px;font-weight:900;margin-left:4px;vertical-align:middle}
+.win-count{background:#00ff8825;color:#00ff88;border:1px solid #00ff8840}
+.loss-count{background:#ff445525;color:#ff6677;border:1px solid #ff445540}
+
+/* ── Empty state ── */
+.empty-state{padding:60px 32px;text-align:center;color:#444;font-size:14px;font-weight:600;letter-spacing:2px;text-transform:uppercase}
 
 /* ── Sections ── */
 .section{display:none;padding:0 32px 48px}
@@ -219,6 +221,7 @@ body{background:#08080f;color:#e8e8f0;font-family:'Segoe UI',system-ui,-apple-sy
   <div class="header-stats">
     <div class="hstat"><span class="hstat-val">3</span><span class="hstat-label">Entries</span></div>
     <div class="hstat"><span class="hstat-val win-val">1</span><span class="hstat-label">Wins</span></div>
+    <div class="hstat"><span class="hstat-val loss-val">2</span><span class="hstat-label">Losses</span></div>
     <div class="hstat"><span class="hstat-val">8/16</span><span class="hstat-label">Picks Hit</span></div>
     <div class="hstat"><span class="hstat-val win-val">$60</span><span class="hstat-label">Net Win</span></div>
     <div class="hstat"><span class="hstat-val">16</span><span class="hstat-label">PS Profiles</span></div>
@@ -226,15 +229,11 @@ body{background:#08080f;color:#e8e8f0;font-family:'Segoe UI',system-ui,-apple-sy
 </div>
 
 <div class="tab-bar">
-  <button class="tab-btn" data-tab="entries" onclick="showTab('entries')">Past Bets</button>
+  <button class="tab-btn" data-tab="entries" onclick="showTab('entries')">All Bets</button>
+  <button class="tab-btn" data-tab="wins"    onclick="showTab('wins')">Wins <span class="tab-count win-count">1</span></button>
+  <button class="tab-btn" data-tab="losses"  onclick="showTab('losses')">Losses <span class="tab-count loss-count">2</span></button>
   <button class="tab-btn" data-tab="players" onclick="showTab('players')">Player Cards</button>
   <button class="tab-btn" data-tab="picks"   onclick="showTab('picks')">Finals Picks</button>
-</div>
-
-<div class="filter-bar">
-  <button class="filter-btn" data-filter="all"    onclick="filterEntries('all')">All Entries</button>
-  <button class="filter-btn" data-filter="wins"   onclick="filterEntries('wins')">Wins</button>
-  <button class="filter-btn" data-filter="losses" onclick="filterEntries('losses')">Losses</button>
 </div>
 
 <div id="entries" class="section"><div class="entry-grid">
@@ -576,6 +575,349 @@ body{background:#08080f;color:#e8e8f0;font-family:'Segoe UI',system-ui,-apple-sy
 </div>
 <div class="bar-wrap">  <div class="bar-track">    <div class="bar-fill" style="width:65%;background:#00ff8840"></div>    <div class="bar-marker" style="left:70%"></div>  </div>  <div class="bar-actual" style="left:calc(65% - 16px);background:#00ff8820;border-color:#00ff88;color:#00ff88">40</div></div></div>
 </div></div></div>
+<div id="wins"    class="section">
+  <div class="entry-grid">
+<div class="entry-card" data-result="win" data-game="NYK 105 vs SAS 95">
+  <div class="entry-header">
+    <div class="pp-logo">P</div>
+    <div class="entry-meta">
+      <div class="entry-amount">$20 paid <span class="payout win">$120</span></div>
+      <div class="entry-type">4-Pick Flex Play <span class="res-badge win">Win</span></div>
+    </div>
+    <div class="entry-score-tag">4/4</div>
+  </div>
+  <div class="game-ctx">
+    <span class="sport-tag">NBA</span>
+    <span class="game-score">NYK 105 vs SAS 95</span>
+    <span class="game-status">Final</span>
+  </div>
+  <div class="picks-list">
+<div class="pick-row">
+  <div class="pick-left">
+    <div class="player-circle hit" style="background:#C4CED420;border-color:#00ff88">
+      <span class="p-initials" style="color:#C4CED4">DF</span>
+      <div class="result-dot win">✓</div>
+    </div>
+    <div class="pick-info">
+      <div class="pick-name">De'Aaron Fox</div>
+      <div class="pick-meta">SAS &bull; G &bull; #4</div>
+    </div>
+  </div>
+  <div class="line-badge hit">
+    <span class="lb-arrow">↓</span>
+    <div class="lb-num">13.5</div>
+    <div class="lb-stat">Points</div>
+  </div>
+</div>
+<div class="bar-wrap">  <div class="bar-track">    <div class="bar-fill" style="width:35%;background:#00ff8840"></div>    <div class="bar-marker" style="left:68%"></div>  </div>  <div class="bar-actual" style="left:calc(35% - 16px);background:#00ff8820;border-color:#00ff88;color:#00ff88">7</div></div>
+<div class="pick-row">
+  <div class="pick-left">
+    <div class="player-circle hit" style="background:#C4CED420;border-color:#00ff88">
+      <span class="p-initials" style="color:#C4CED4">DV</span>
+      <div class="result-dot win">✓</div>
+    </div>
+    <div class="pick-info">
+      <div class="pick-name">Devin Vassell</div>
+      <div class="pick-meta">SAS &bull; G-F &bull; #24</div>
+    </div>
+  </div>
+  <div class="line-badge hit">
+    <span class="diff-icon goblin" title="GOBLIN">😈</span><span class="lb-arrow">↑</span>
+    <div class="lb-num">6.5</div>
+    <div class="lb-stat">Rebs+Asts</div>
+  </div>
+</div>
+<div class="bar-wrap">  <div class="bar-track">    <div class="bar-fill" style="width:67%;background:#00ff8840"></div>    <div class="bar-marker" style="left:37%"></div>  </div>  <div class="bar-actual" style="left:calc(67% - 16px);background:#00ff8820;border-color:#00ff88;color:#00ff88">12</div></div>
+<div class="pick-row">
+  <div class="pick-left">
+    <div class="player-circle hit" style="background:#F5842620;border-color:#00ff88">
+      <span class="p-initials" style="color:#F58426">KT</span>
+      <div class="result-dot win">✓</div>
+    </div>
+    <div class="pick-info">
+      <div class="pick-name">Karl-Anthony Towns</div>
+      <div class="pick-meta">NYK &bull; C-F &bull; #32</div>
+    </div>
+  </div>
+  <div class="line-badge hit">
+    <span class="diff-icon goblin" title="GOBLIN">😈</span><span class="lb-arrow">↑</span>
+    <div class="lb-num">15.5</div>
+    <div class="lb-stat">Points</div>
+  </div>
+</div>
+<div class="bar-wrap">  <div class="bar-track">    <div class="bar-fill" style="width:69%;background:#00ff8840"></div>    <div class="bar-marker" style="left:59%"></div>  </div>  <div class="bar-actual" style="left:calc(69% - 16px);background:#00ff8820;border-color:#00ff88;color:#00ff88">18</div></div>
+<div class="pick-row">
+  <div class="pick-left">
+    <div class="player-circle hit" style="background:#C4CED420;border-color:#00ff88">
+      <span class="p-initials" style="color:#C4CED4">VW</span>
+      <div class="result-dot win">✓</div>
+    </div>
+    <div class="pick-info">
+      <div class="pick-name">Victor Wembanyama</div>
+      <div class="pick-meta">SAS &bull; F-C &bull; #1</div>
+    </div>
+  </div>
+  <div class="line-badge hit">
+    <span class="diff-icon demon" title="DEMON">😈</span><span class="lb-arrow">↑</span>
+    <div class="lb-num">11.5</div>
+    <div class="lb-stat">Rebounds</div>
+  </div>
+</div>
+<div class="bar-wrap">  <div class="bar-track">    <div class="bar-fill" style="width:67%;background:#00ff8840"></div>    <div class="bar-marker" style="left:65%"></div>  </div>  <div class="bar-actual" style="left:calc(67% - 16px);background:#00ff8820;border-color:#00ff88;color:#00ff88">12</div></div></div>
+</div></div>
+</div>
+<div id="losses"  class="section">
+  <div class="entry-grid">
+<div class="entry-card" data-result="loss" data-game="NYK 105 vs SAS 104">
+  <div class="entry-header">
+    <div class="pp-logo">P</div>
+    <div class="entry-meta">
+      <div class="entry-amount">$20 for <span class="payout loss">$260</span></div>
+      <div class="entry-type">6-Pick Flex Play <span class="res-badge loss">Loss</span></div>
+    </div>
+    <div class="entry-score-tag">1/6</div>
+  </div>
+  <div class="game-ctx">
+    <span class="sport-tag">NBA</span>
+    <span class="game-score">NYK 105 vs SAS 104</span>
+    <span class="game-status">Final</span>
+  </div>
+  <div class="picks-list">
+<div class="pick-row">
+  <div class="pick-left">
+    <div class="player-circle miss" style="background:#C4CED420;border-color:#ff4455">
+      <span class="p-initials" style="color:#C4CED4">DF</span>
+      <div class="result-dot loss">✗</div>
+    </div>
+    <div class="pick-info">
+      <div class="pick-name">De'Aaron Fox</div>
+      <div class="pick-meta">SAS &bull; G &bull; #4</div>
+    </div>
+  </div>
+  <div class="line-badge miss">
+    <span class="lb-arrow">↓</span>
+    <div class="lb-num">14.5</div>
+    <div class="lb-stat">Points</div>
+  </div>
+</div>
+<div class="bar-wrap">  <div class="bar-track">    <div class="bar-fill" style="width:69%;background:#ff445540"></div>    <div class="bar-marker" style="left:50%"></div>  </div>  <div class="bar-actual" style="left:calc(69% - 16px);background:#ff445520;border-color:#ff4455;color:#ff4455">20</div></div>
+<div class="pick-row">
+  <div class="pick-left">
+    <div class="player-circle miss" style="background:#F5842620;border-color:#ff4455">
+      <span class="p-initials" style="color:#F58426">JB</span>
+      <div class="result-dot loss">✗</div>
+    </div>
+    <div class="pick-info">
+      <div class="pick-name">Jalen Brunson</div>
+      <div class="pick-meta">NYK &bull; G &bull; #11</div>
+    </div>
+  </div>
+  <div class="line-badge miss">
+    <span class="lb-arrow">↑</span>
+    <div class="lb-num">34.5</div>
+    <div class="lb-stat">PRA</div>
+  </div>
+</div>
+<div class="bar-wrap">  <div class="bar-track">    <div class="bar-fill" style="width:63%;background:#ff445540"></div>    <div class="bar-marker" style="left:70%"></div>  </div>  <div class="bar-actual" style="left:calc(63% - 16px);background:#ff445520;border-color:#ff4455;color:#ff4455">31</div></div>
+<div class="pick-row">
+  <div class="pick-left">
+    <div class="player-circle miss" style="background:#C4CED420;border-color:#ff4455">
+      <span class="p-initials" style="color:#C4CED4">JC</span>
+      <div class="result-dot loss">✗</div>
+    </div>
+    <div class="pick-info">
+      <div class="pick-name">Julian Champagnie</div>
+      <div class="pick-meta">SAS &bull; F &bull; #30</div>
+    </div>
+  </div>
+  <div class="line-badge miss">
+    <span class="lb-arrow">↑</span>
+    <div class="lb-num">2.5</div>
+    <div class="lb-stat">3PTM</div>
+  </div>
+</div>
+<div class="bar-wrap">  <div class="bar-track">    <div class="bar-fill" style="width:44%;background:#ff445540"></div>    <div class="bar-marker" style="left:56%"></div>  </div>  <div class="bar-actual" style="left:calc(44% - 16px);background:#ff445520;border-color:#ff4455;color:#ff4455">2</div></div>
+<div class="pick-row">
+  <div class="pick-left">
+    <div class="player-circle miss" style="background:#C4CED420;border-color:#ff4455">
+      <span class="p-initials" style="color:#C4CED4">JC</span>
+      <div class="result-dot loss">✗</div>
+    </div>
+    <div class="pick-info">
+      <div class="pick-name">Julian Champagnie</div>
+      <div class="pick-meta">SAS &bull; F &bull; #30</div>
+    </div>
+  </div>
+  <div class="line-badge miss">
+    <span class="diff-icon goblin" title="GOBLIN">😈</span><span class="lb-arrow">↑</span>
+    <div class="lb-num">9.5</div>
+    <div class="lb-stat">Points</div>
+  </div>
+</div>
+<div class="bar-wrap">  <div class="bar-track">    <div class="bar-fill" style="width:56%;background:#ff445540"></div>    <div class="bar-marker" style="left:66%"></div>  </div>  <div class="bar-actual" style="left:calc(56% - 16px);background:#ff445520;border-color:#ff4455;color:#ff4455">8</div></div>
+<div class="pick-row">
+  <div class="pick-left">
+    <div class="player-circle hit" style="background:#F5842620;border-color:#00ff88">
+      <span class="p-initials" style="color:#F58426">KT</span>
+      <div class="result-dot win">✓</div>
+    </div>
+    <div class="pick-info">
+      <div class="pick-name">Karl-Anthony Towns</div>
+      <div class="pick-meta">NYK &bull; C-F &bull; #32</div>
+    </div>
+  </div>
+  <div class="line-badge hit">
+    <span class="lb-arrow">↑</span>
+    <div class="lb-num">32.5</div>
+    <div class="lb-stat">PRA</div>
+  </div>
+</div>
+<div class="bar-wrap">  <div class="bar-track">    <div class="bar-fill" style="width:70%;background:#00ff8840"></div>    <div class="bar-marker" style="left:60%"></div>  </div>  <div class="bar-actual" style="left:calc(70% - 16px);background:#00ff8820;border-color:#00ff88;color:#00ff88">38</div></div>
+<div class="pick-row">
+  <div class="pick-left">
+    <div class="player-circle miss" style="background:#C4CED420;border-color:#ff4455">
+      <span class="p-initials" style="color:#C4CED4">VW</span>
+      <div class="result-dot loss">✗</div>
+    </div>
+    <div class="pick-info">
+      <div class="pick-name">Victor Wembanyama</div>
+      <div class="pick-meta">SAS &bull; F-C &bull; #1</div>
+    </div>
+  </div>
+  <div class="line-badge miss">
+    <span class="lb-arrow">↑</span>
+    <div class="lb-num">41.5</div>
+    <div class="lb-stat">PRA</div>
+  </div>
+</div>
+<div class="bar-wrap">  <div class="bar-track">    <div class="bar-fill" style="width:68%;background:#ff445540"></div>    <div class="bar-marker" style="left:70%"></div>  </div>  <div class="bar-actual" style="left:calc(68% - 16px);background:#ff445520;border-color:#ff4455;color:#ff4455">40</div></div></div>
+</div>
+
+<div class="entry-card" data-result="loss" data-game="NYK 105 vs SAS 95">
+  <div class="entry-header">
+    <div class="pp-logo">P</div>
+    <div class="entry-meta">
+      <div class="entry-amount">$20 for <span class="payout loss">$920</span></div>
+      <div class="entry-type">6-Pick Flex Play <span class="res-badge loss">Loss</span></div>
+    </div>
+    <div class="entry-score-tag">3/6</div>
+  </div>
+  <div class="game-ctx">
+    <span class="sport-tag">NBA</span>
+    <span class="game-score">NYK 105 vs SAS 95</span>
+    <span class="game-status">Final</span>
+  </div>
+  <div class="picks-list">
+<div class="pick-row">
+  <div class="pick-left">
+    <div class="player-circle hit" style="background:#F5842620;border-color:#00ff88">
+      <span class="p-initials" style="color:#F58426">JB</span>
+      <div class="result-dot win">✓</div>
+    </div>
+    <div class="pick-info">
+      <div class="pick-name">Jalen Brunson</div>
+      <div class="pick-meta">NYK &bull; G &bull; #11</div>
+    </div>
+  </div>
+  <div class="line-badge hit">
+    <span class="diff-icon goblin" title="GOBLIN">😈</span><span class="lb-arrow">↑</span>
+    <div class="lb-num">0.5</div>
+    <div class="lb-stat">Points</div>
+  </div>
+</div>
+<div class="bar-wrap">  <div class="bar-track">    <div class="bar-fill" style="width:70%;background:#00ff8840"></div>    <div class="bar-marker" style="left:1%"></div>  </div>  <div class="bar-actual" style="left:calc(70% - 16px);background:#00ff8820;border-color:#00ff88;color:#00ff88">30</div></div>
+<div class="pick-row">
+  <div class="pick-left">
+    <div class="player-circle hit" style="background:#C4CED420;border-color:#00ff88">
+      <span class="p-initials" style="color:#C4CED4">JC</span>
+      <div class="result-dot win">✓</div>
+    </div>
+    <div class="pick-info">
+      <div class="pick-name">Julian Champagnie</div>
+      <div class="pick-meta">SAS &bull; F &bull; #30</div>
+    </div>
+  </div>
+  <div class="line-badge hit">
+    <span class="lb-arrow">↑</span>
+    <div class="lb-num">10.0</div>
+    <div class="lb-stat">Points</div>
+  </div>
+</div>
+<div class="bar-wrap">  <div class="bar-track">    <div class="bar-fill" style="width:68%;background:#00ff8840"></div>    <div class="bar-marker" style="left:43%"></div>  </div>  <div class="bar-actual" style="left:calc(68% - 16px);background:#00ff8820;border-color:#00ff88;color:#00ff88">16</div></div>
+<div class="pick-row">
+  <div class="pick-left">
+    <div class="player-circle miss" style="background:#F5842620;border-color:#ff4455">
+      <span class="p-initials" style="color:#F58426">KT</span>
+      <div class="result-dot loss">✗</div>
+    </div>
+    <div class="pick-info">
+      <div class="pick-name">Karl-Anthony Towns</div>
+      <div class="pick-meta">NYK &bull; C-F &bull; #32</div>
+    </div>
+  </div>
+  <div class="line-badge miss">
+    <span class="lb-arrow">↓</span>
+    <div class="lb-num">33.0</div>
+    <div class="lb-stat">PRA</div>
+  </div>
+</div>
+<div class="bar-wrap">  <div class="bar-track">    <div class="bar-fill" style="width:70%;background:#ff445540"></div>    <div class="bar-marker" style="left:68%"></div>  </div>  <div class="bar-actual" style="left:calc(70% - 16px);background:#ff445520;border-color:#ff4455;color:#ff4455">34</div></div>
+<div class="pick-row">
+  <div class="pick-left">
+    <div class="player-circle miss" style="background:#F5842620;border-color:#ff4455">
+      <span class="p-initials" style="color:#F58426">LS</span>
+      <div class="result-dot loss">✗</div>
+    </div>
+    <div class="pick-info">
+      <div class="pick-name">Landry Shamet</div>
+      <div class="pick-meta">NYK &bull; G &bull; #44</div>
+    </div>
+  </div>
+  <div class="line-badge miss">
+    <span class="diff-icon demon" title="DEMON">😈</span><span class="lb-arrow">↑</span>
+    <div class="lb-num">14.5</div>
+    <div class="lb-stat">PRA</div>
+  </div>
+</div>
+<div class="bar-wrap">  <div class="bar-track">    <div class="bar-fill" style="width:66%;background:#ff445540"></div>    <div class="bar-marker" style="left:68%"></div>  </div>  <div class="bar-actual" style="left:calc(66% - 16px);background:#ff445520;border-color:#ff4455;color:#ff4455">14</div></div>
+<div class="pick-row">
+  <div class="pick-left">
+    <div class="player-circle miss" style="background:#F5842620;border-color:#ff4455">
+      <span class="p-initials" style="color:#F58426">MB</span>
+      <div class="result-dot loss">✗</div>
+    </div>
+    <div class="pick-info">
+      <div class="pick-name">Mikal Bridges</div>
+      <div class="pick-meta">NYK &bull; G-F &bull; #25</div>
+    </div>
+  </div>
+  <div class="line-badge miss">
+    <span class="lb-arrow">↑</span>
+    <div class="lb-num">21.5</div>
+    <div class="lb-stat">PRA</div>
+  </div>
+</div>
+<div class="bar-wrap">  <div class="bar-track">    <div class="bar-fill" style="width:48%;background:#ff445540"></div>    <div class="bar-marker" style="left:69%"></div>  </div>  <div class="bar-actual" style="left:calc(48% - 16px);background:#ff445520;border-color:#ff4455;color:#ff4455">15</div></div>
+<div class="pick-row">
+  <div class="pick-left">
+    <div class="player-circle hit" style="background:#C4CED420;border-color:#00ff88">
+      <span class="p-initials" style="color:#C4CED4">VW</span>
+      <div class="result-dot win">✓</div>
+    </div>
+    <div class="pick-info">
+      <div class="pick-name">Victor Wembanyama</div>
+      <div class="pick-meta">SAS &bull; F-C &bull; #1</div>
+    </div>
+  </div>
+  <div class="line-badge hit">
+    <span class="lb-arrow">↓</span>
+    <div class="lb-num">43.5</div>
+    <div class="lb-stat">PRA</div>
+  </div>
+</div>
+<div class="bar-wrap">  <div class="bar-track">    <div class="bar-fill" style="width:65%;background:#00ff8840"></div>    <div class="bar-marker" style="left:70%"></div>  </div>  <div class="bar-actual" style="left:calc(65% - 16px);background:#00ff8820;border-color:#00ff88;color:#00ff88">40</div></div></div>
+</div></div>
+</div>
 <div id="players" class="section"><div class="player-grid">
 <div class="player-card" style="background:linear-gradient(150deg,#001e5c 0%,#003a9e 60%,#c96510 100%);box-shadow:0 0 28px rgba(245,132,38,0.4);border-color:#F58426">
   <div class="pc-header">
@@ -1371,18 +1713,7 @@ body{background:#08080f;color:#e8e8f0;font-family:'Segoe UI',system-ui,-apple-sy
 function showTab(id) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === id));
   document.querySelectorAll('.section').forEach(s => s.classList.toggle('active', s.id === id));
-  const fb = document.querySelector('.filter-bar');
-  if (fb) fb.style.display = (id === 'entries') ? 'flex' : 'none';
 }
-function filterEntries(type) {
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === type));
-  document.querySelectorAll('.entry-card').forEach(card => {
-    let show = true;
-    if (type === 'wins')   show = card.dataset.result === 'win';
-    if (type === 'losses') show = card.dataset.result === 'loss';
-    card.style.display = show ? '' : 'none';
-  });
-}
-document.addEventListener('DOMContentLoaded', () => { showTab('entries'); filterEntries('all'); });
+document.addEventListener('DOMContentLoaded', () => { showTab('entries'); });
 </script>
 </body></html>
